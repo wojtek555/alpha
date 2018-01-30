@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Squashes all commits, not found in master, to one.
+
+function squash {
+  git rebase -i ${HASH}; # replace ${HASH} with hash got from previous command
+}
+
+# Get current branch name.
+BRANCH="$(git rev-parse --abbrev-ref HEAD)";
+
+# Find the start commit for rebase.
+HASH="$(git merge-base ${BRANCH} master)";
+
+echo "Squashing all commits to one and rebasing master onto current branch."
+echo "Current branch: ${BRANCH}";
+echo "Commit hash for rebase: ${HASH}";
+echo "Command to squash: git rebase -i ${HASH}"
+
+while true; do
+    read -p "Continue? " yn
+    case $yn in
+        [Yy]* ) echo "OK, doing"; squash; break;;
+        [Nn]* ) exit;;
+        * ) echo "Please answer y or n.";;
+    esac
+done

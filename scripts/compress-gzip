@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# see https://certsimple.com/blog/nginx-brotli
+# Compresses files with gzip
+
+OLDIFS=$IFS
+IFS=$'\n'
+for FILE in $(find . -type f -iname '*.css' -o -iname '*.js' -o -iname '*.svg' -o -iname '*.json'); do
+    echo -n "Compressing ${FILE}..."
+    gzip -cf ${FILE} > ${FILE}.gz;
+    echo "done."
+done
+IFS=$OLDIFS
